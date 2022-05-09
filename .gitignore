@@ -92,3 +92,4 @@ ENV/
 result/
 checkpoint/
 dataset/
+!result/.gitkeep
