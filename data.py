@@ -15,3 +15,5 @@ def get_test_set(root_dir):
 
     # return DatasetFromFolder(test_dir, direction)
     return JsonDatasetTest(test_dir)
+
+a = 1
