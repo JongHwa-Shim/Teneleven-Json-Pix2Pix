@@ -65,7 +65,7 @@ def test(epoch):
         out_img = plan_2_img_json(out_img) # numpy (H, W, 3)
         
         # deny output image pixels out of silhouette
-        inv_sil_mask = np.where(img_input[0,0] == 1, False, True) # numpy (H, W)
+        inv_sil_mask = np.where(img_input.cpu()[0,0] == 1, False, True) # numpy (H, W)
         out_img[inv_sil_mask] = [0,0,0]
 
         # colorize input image
@@ -84,8 +84,8 @@ def test(epoch):
         
 
 if __name__ == '__main__':
-    start = 11
-    end = 50
-    step = 2
+    start = 1
+    end = 2
+    step = 1
     for i in range(start, end, step):
         test(i)
