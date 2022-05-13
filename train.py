@@ -32,7 +32,7 @@ parser.add_argument('--cuda', action='store_true', help='use cuda?')
 parser.add_argument('--threads', type=int, default=0, help='number of threads for data loader to use')
 parser.add_argument('--seed', type=int, default=123, help='random seed to use. Default=123')
 parser.add_argument('--lamb', type=int, default=10, help='weight on L1 term in objective')
-opt = parser.parse_args("--dataset json --batch_size 2 --cuda --test_batch_size 1 --input_nc 15 --output_nc 16".split())
+opt = parser.parse_args("--dataset json --batch_size 2 --cuda --test_batch_size 1 --input_nc 1 --output_nc 16".split())
 #opt = parser.parse_args()
 print(opt)
 
