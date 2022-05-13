@@ -49,9 +49,14 @@ def plan_2_img_json(img_tensor):
 
     return canvas
 
-room_list_input = {0: 'silhouette', 1: 'entrance', 2: 'utility', 3: 'dress', 4: 'toilet', 
-                5: 'balcony', 6: 'bed', 7: 'dinning', 8: 'kitchen', 9: 'living', 
-                10: 'window', 11: 'slide', 12: 'door', 13: 'enter', 14: 'extra'}
+# exp3 changes
+# room_list_input = {0: 'silhouette', 1: 'entrance', 2: 'utility', 3: 'dress', 4: 'toilet', 
+#                 5: 'balcony', 6: 'bed', 7: 'dinning', 8: 'kitchen', 9: 'living', 
+#                 10: 'window', 11: 'slide', 12: 'door', 13: 'enter', 14: 'extra'}
+
+# exp3 changes
+room_list_input = {0: 'silhouette'}
+
 import torch
 def coloring_plan_json(img_tensor):
     """
