@@ -213,7 +213,7 @@ class JsonDatasetTrain(data.Dataset):
     def __getitem__(self, index):
         # make empty data
         data_a = np.zeros((len(room_list_input)+2, 600, 600)) # silhouette
-        data_b = np.zeros((len(room_list_target)+2, 600, 600)) # background
+        data_b = np.zeros((len(room_list_target)+1, 600, 600)) # background
 
         dir = join(self.data_root, self.dir_list[index])
         for room, value in room_list_input.items():
@@ -269,7 +269,7 @@ class JsonDatasetTest(data.Dataset):
 
     def __getitem__(self, index):
         # make empty data
-        data_a = np.zeros((len(room_list_input)+1, 600, 600)) # silhouette
+        data_a = np.zeros((len(room_list_input)+2, 600, 600)) # silhouette
         data_b = np.zeros((len(room_list_target)+1, 600, 600)) # background
 
         dir = join(self.data_root, self.dir_list[index])
