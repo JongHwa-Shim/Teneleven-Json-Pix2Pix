@@ -199,7 +199,7 @@ def random_instance(room_img: torch.tensor):
 
 # room_list_input = {'entrance': 1, 'utility': 2, 'dress': 3, 'toilet': 4, 'balcony': 5, 'bed': 6, 'dinning': 7, 'kitchen': 8, 'living': 9, 'window': 10,
 #             'slide': 11, 'door': 12, 'enter': 13, 'extra': 14}
-room_list_input = {}
+room_list_input = {'window': 1}
 
 room_list_target = {'entrance': 1, 'utility': 2, 'dress': 3, 'toilet': 4, 'balcony': 5, 'bed': 6, 'dinning': 7, 'kitchen': 8, 'living': 9, 'window': 10,
             'slide': 11, 'door': 12, 'enter': 13, 'wall': 14, 'extra': 15}
@@ -212,8 +212,8 @@ class JsonDatasetTrain(data.Dataset):
 
     def __getitem__(self, index):
         # make empty data
-        data_a = np.zeros((len(room_list_input)+1, 600, 600)) # silhouette
-        data_b = np.zeros((len(room_list_target)+1, 600, 600)) # background
+        data_a = np.zeros((len(room_list_input)+2, 600, 600)) # silhouette
+        data_b = np.zeros((len(room_list_target)+2, 600, 600)) # background
 
         dir = join(self.data_root, self.dir_list[index])
         for room, value in room_list_input.items():
@@ -230,6 +230,12 @@ class JsonDatasetTrain(data.Dataset):
         sil_path = join(dir, 'silhouette_image.png')
         sil_np = np.array(Image.open(sil_path))/255
         data_a[0] = sil_np
+
+        # add enter to data_a[2]
+        enter_dir = join(dir, 'enter')
+        enter_name_list = listdir(enter_dir)
+        enter_np = unify_ins(enter_name_list, enter_dir)
+        data_a[2] = enter_np
         
         for room, value in room_list_target.items():
             room_dir = join(dir, room)
@@ -281,6 +287,12 @@ class JsonDatasetTest(data.Dataset):
         sil_path = join(dir, 'silhouette_image.png')
         sil_np = np.array(Image.open(sil_path))/255
         data_a[0] = sil_np
+
+        # add enter to data_a[2]
+        enter_dir = join(dir, 'enter')
+        enter_name_list = listdir(enter_dir)
+        enter_np = unify_ins(enter_name_list, enter_dir)
+        data_a[2] = enter_np
         
         for room, value in room_list_target.items():
             room_dir = join(dir, room)
