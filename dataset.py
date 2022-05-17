@@ -238,7 +238,7 @@ class JsonDatasetTrain(data.Dataset):
         data_a[2] = enter_np
 
         # add entrance to data_a[3]
-        enter_dir = join(dir, 'enterance')
+        enter_dir = join(dir, 'entrance')
         enter_name_list = listdir(enter_dir)
         enter_np = unify_ins(enter_name_list, enter_dir)
         data_a[3] = enter_np
