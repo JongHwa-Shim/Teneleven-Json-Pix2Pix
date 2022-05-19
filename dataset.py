@@ -212,7 +212,7 @@ class JsonDatasetTrain(data.Dataset):
 
     def __getitem__(self, index):
         # make empty data
-        data_a = np.zeros((len(room_list_input)+3, 600, 600)) # silhouette
+        data_a = np.zeros((len(room_list_input)+4, 600, 600)) # silhouette
         data_b = np.zeros((len(room_list_target)+1, 600, 600)) # background
 
         dir = join(self.data_root, self.dir_list[index])
@@ -242,6 +242,12 @@ class JsonDatasetTrain(data.Dataset):
         enter_name_list = listdir(enter_dir)
         enter_np = unify_ins(enter_name_list, enter_dir)
         data_a[3] = enter_np
+
+        # add living to data_a[4]
+        enter_dir = join(dir, 'living')
+        enter_name_list = listdir(enter_dir)
+        enter_np = unify_ins(enter_name_list, enter_dir)
+        data_a[4] = enter_np
         
         for room, value in room_list_target.items():
             room_dir = join(dir, room)
@@ -275,7 +281,7 @@ class JsonDatasetTest(data.Dataset):
 
     def __getitem__(self, index):
         # make empty data
-        data_a = np.zeros((len(room_list_input)+3, 600, 600)) # silhouette
+        data_a = np.zeros((len(room_list_input)+4, 600, 600)) # silhouette
         data_b = np.zeros((len(room_list_target)+1, 600, 600)) # background
 
         dir = join(self.data_root, self.dir_list[index])
@@ -305,6 +311,12 @@ class JsonDatasetTest(data.Dataset):
         enter_name_list = listdir(enter_dir)
         enter_np = unify_ins(enter_name_list, enter_dir)
         data_a[3] = enter_np
+
+        # add living to data_a[4]
+        enter_dir = join(dir, 'living')
+        enter_name_list = listdir(enter_dir)
+        enter_np = unify_ins(enter_name_list, enter_dir)
+        data_a[4] = enter_np
         
         for room, value in room_list_target.items():
             room_dir = join(dir, room)
