@@ -53,8 +53,8 @@ def plan_2_img_json(img_tensor):
 #                 5: 'balcony', 6: 'bed', 7: 'dinning', 8: 'kitchen', 9: 'living', 
 #                 10: 'window', 11: 'slide', 12: 'door', 13: 'enter', 14: 'extra'}
 
-# exp4 changes
-room_list_input = {0: 'silhouette', 1: 'window', 2: 'enter'}
+# exp6 changes
+room_list_input = {0: 'silhouette', 1: 'window', 2: 'enter', 3: 'entrance', 4: 'living'}
 
 import torch
 def coloring_plan_json(img_tensor):
