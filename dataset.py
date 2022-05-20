@@ -282,7 +282,7 @@ class JsonDatasetTest(data.Dataset):
         data_a[0] = sil_np
 
         # add window to data_a[10]
-        enter_dir = join(dir, 'entrance')
+        enter_dir = join(dir, 'window')
         enter_name_list = listdir(enter_dir)
         enter_np = unify_ins(enter_name_list, enter_dir)
         data_a[10] = enter_np
