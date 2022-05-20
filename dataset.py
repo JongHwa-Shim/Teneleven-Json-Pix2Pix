@@ -281,6 +281,13 @@ class JsonDatasetTest(data.Dataset):
         sil_np = np.array(Image.open(sil_path))/255
         data_a[0] = sil_np
 
+        # add entrance to data_a[1]
+        enter_dir = join(dir, 'entrance')
+        enter_name_list = listdir(enter_dir)
+        enter_np = unify_ins(enter_name_list, enter_dir)
+        data_a[1] = enter_np
+
+
         # add window to data_a[10]
         enter_dir = join(dir, 'window')
         enter_name_list = listdir(enter_dir)
