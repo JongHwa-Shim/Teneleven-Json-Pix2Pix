@@ -199,7 +199,7 @@ def random_instance(room_img: torch.tensor):
 
 # room_list_input = {'entrance': 1, 'utility': 2, 'dress': 3, 'toilet': 4, 'balcony': 5, 'bed': 6, 'dinning': 7, 'kitchen': 8, 'living': 9, 'window': 10,
 #             'slide': 11, 'door': 12, 'enter': 13, 'extra': 14}
-room_list_input = {'entrance': 1, 'window': 10, 'door': 12, 'enter': 13}
+room_list_input = {'entrance': 1, 'window': 10,'enter': 13}
 
 room_list_target = {'entrance': 1, 'utility': 2, 'dress': 3, 'toilet': 4, 'balcony': 5, 'bed': 6, 'dinning': 7, 'kitchen': 8, 'living': 9, 'window': 10,
             'slide': 11, 'door': 12, 'enter': 13, 'wall': 14, 'extra': 15}
