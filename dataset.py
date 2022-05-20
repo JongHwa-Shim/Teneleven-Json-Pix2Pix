@@ -215,20 +215,32 @@ class JsonDatasetTrain(data.Dataset):
         data_b = np.zeros((len(room_list_target)+1, 600, 600)) # background
 
         dir = join(self.data_root, self.dir_list[index])
-        for room, value in room_list_input.items():
-            room_dir = join(dir, room)
-            seg_name_list = listdir(room_dir)
-            rand_seg_name_list = random_ins(seg_name_list)
+        # for room, value in room_list_input.items():
+        #     room_dir = join(dir, room)
+        #     seg_name_list = listdir(room_dir)
+        #     rand_seg_name_list = random_ins(seg_name_list)
 
-            # if there is room
-            if len(rand_seg_name_list) != 0:
-                rand_seg_np = unify_ins(rand_seg_name_list, room_dir)
-                data_a[value] = rand_seg_np
+        #     # if there is room
+        #     if len(rand_seg_name_list) != 0:
+        #         rand_seg_np = unify_ins(rand_seg_name_list, room_dir)
+        #         data_a[value] = rand_seg_np
         
         # add silhouette to data_a[0]
         sil_path = join(dir, 'silhouette_image.png')
         sil_np = np.array(Image.open(sil_path))/255
         data_a[0] = sil_np
+
+        # add window to data_a[10]
+        enter_dir = join(dir, 'entrance')
+        enter_name_list = listdir(enter_dir)
+        enter_np = unify_ins(enter_name_list, enter_dir)
+        data_a[10] = enter_np
+
+        # add enter to data_a[13]
+        enter_dir = join(dir, 'enter')
+        enter_name_list = listdir(enter_dir)
+        enter_np = unify_ins(enter_name_list, enter_dir)
+        data_a[13] = enter_np
         
         for room, value in room_list_target.items():
             room_dir = join(dir, room)
