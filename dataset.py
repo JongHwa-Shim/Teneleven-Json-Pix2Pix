@@ -287,6 +287,11 @@ class JsonDatasetTest(data.Dataset):
         enter_np = unify_ins(enter_name_list, enter_dir)
         data_a[1] = enter_np
 
+        # add living to data_a[9]
+        enter_dir = join(dir, 'living')
+        enter_name_list = listdir(enter_dir)
+        enter_np = unify_ins(enter_name_list, enter_dir)
+        data_a[9] = enter_np
 
         # add window to data_a[10]
         enter_dir = join(dir, 'window')
