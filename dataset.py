@@ -197,11 +197,17 @@ def random_instance(room_img: torch.tensor):
     
     return ins_canvas
 
-room_list_input = {'entrance': 1, 'utility': 2, 'dress': 3, 'toilet': 4, 'balcony': 5, 'bed': 6, 'dinning': 7, 'kitchen': 8, 'living': 9, 'window': 10,
-            'slide': 11, 'door': 12, 'enter': 13, 'extra': 14}
+""" room_list_input = {'entrance': 1, 'utility': 2, 'dress': 3, 'toilet': 4, 'balcony': 5, 'bed': 6, 'dinning': 7, 'kitchen': 8, 'living': 9, 'window': 10,
+            'slide': 11, 'door': 12, 'enter': 13, 'extra': 14} 
+"""
+room_list_input = {'entrance': 1, 'toilet': 2, 'balcony': 3, 'bed': 4, 'living': 5, 'window': 6, 'slide': 7, 'door': 8, 'enter': 9, 
+            'dress': 10, 'utility': 11}
 
-room_list_target = {'entrance': 1, 'utility': 2, 'dress': 3, 'toilet': 4, 'balcony': 5, 'bed': 6, 'dinning': 7, 'kitchen': 8, 'living': 9, 'window': 10,
-            'slide': 11, 'door': 12, 'enter': 13, 'wall': 14, 'extra': 15}
+""" room_list_target = {'entrance': 1, 'utility': 2, 'dress': 3, 'toilet': 4, 'balcony': 5, 'bed': 6, 'dinning': 7, 'kitchen': 8, 'living': 9, 'window': 10,
+            'slide': 11, 'door': 12, 'enter': 13, 'wall': 14, 'extra': 15} 
+"""
+room_list_target = {'entrance': 1, 'toilet': 2, 'balcony': 3, 'bed': 4, 'living': 5, 'window': 6, 'slide': 7, 'door': 8, 'enter': 9, 'wall': 10,
+            'dress': 11, 'utility': 12}
 class JsonDatasetTrain(data.Dataset):
     def __init__(self, data_root, transform):
         super(JsonDatasetTrain, self).__init__()
@@ -287,23 +293,23 @@ class JsonDatasetTest(data.Dataset):
         enter_np = unify_ins(enter_name_list, enter_dir)
         data_a[1] = enter_np
 
-        # add living to data_a[9]
+        # add living to data_a[5]
         enter_dir = join(dir, 'living')
         enter_name_list = listdir(enter_dir)
         enter_np = unify_ins(enter_name_list, enter_dir)
-        data_a[9] = enter_np
+        data_a[5] = enter_np
 
-        # add window to data_a[10]
+        # add window to data_a[6]
         enter_dir = join(dir, 'window')
         enter_name_list = listdir(enter_dir)
         enter_np = unify_ins(enter_name_list, enter_dir)
-        data_a[10] = enter_np
+        data_a[6] = enter_np
 
-        # add enter to data_a[13]
+        # add enter to data_a[9]
         enter_dir = join(dir, 'enter')
         enter_name_list = listdir(enter_dir)
         enter_np = unify_ins(enter_name_list, enter_dir)
-        data_a[13] = enter_np
+        data_a[9] = enter_np
         
         for room, value in room_list_target.items():
             room_dir = join(dir, room)

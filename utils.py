@@ -23,10 +23,13 @@ color_map = {'background': [0, 0, 0], 'entrance': [0, 66, 0], 'utility': [0, 0, 
             'bed': [255, 0, 0], 'kitchen': [0, 255, 0], 'living': [0, 0, 255],
             'window': [66, 66, 0], 'slide': [66, 0, 66], 'door': [0, 66, 66],
             'enter': [125, 125, 0], 'wall': [125, 0, 125], 'extra': [0, 125, 125], 'dinning': [255, 0, 0], 'silhouette': [125, 125, 125]}
-
+""" 
 room_list_target = {0: 'background', 1: 'entrance', 2: 'utility', 3: 'dress', 4: 'toilet', 
                 5: 'balcony', 6: 'bed', 7: 'dinning', 8: 'kitchen', 9: 'living', 
                 10: 'window', 11: 'slide', 12: 'door', 13: 'enter', 14: 'wall', 15: 'extra'}
+"""
+room_list_target = {0: 'background', 1: 'entrance', 2: 'toilet', 3: 'balcony', 4: 'bed', 5: 'living', 6: 'window', 
+            7: 'slide', 8: 'door', 9: 'enter', 10: 'wall', 11: 'dress', 12: 'utility'}
 
 def plan_2_img_json(img_tensor):
     """
@@ -48,10 +51,14 @@ def plan_2_img_json(img_tensor):
         canvas[color_mask] = color
 
     return canvas
-
+""" 
 room_list_input = {0: 'silhouette', 1: 'entrance', 2: 'utility', 3: 'dress', 4: 'toilet', 
                 5: 'balcony', 6: 'bed', 7: 'dinning', 8: 'kitchen', 9: 'living', 
                 10: 'window', 11: 'slide', 12: 'door', 13: 'enter', 14: 'extra'}
+"""
+room_list_input = {0: 'silhouette', 1: 'entrance', 2: 'toilet', 3: 'balcony', 4: 'bed', 5: 'living', 6: 'window', 
+            7: 'slide', 8: 'door', 9: 'enter', 10: 'dress', 11: 'utility'}
+
 import torch
 def coloring_plan_json(img_tensor):
     """
