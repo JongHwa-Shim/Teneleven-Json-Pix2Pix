@@ -221,10 +221,15 @@ class JsonDatasetTrain(data.Dataset):
         data_b = np.zeros((len(room_list_target)+1, 600, 600)) # background
 
         dir = join(self.data_root, self.dir_list[index])
+
+        from train import epoch
+        decay_room_num_dict = decay_ins(dir, room_list_input, current_epoch=epoch)
+
         for room, value in room_list_input.items():
             room_dir = join(dir, room)
             seg_name_list = listdir(room_dir)
-            rand_seg_name_list = random_ins(seg_name_list)
+            rand_seg_name_list = random.sample(seg_name_list, decay_room_num_dict[room])
+            # rand_seg_name_list = random_ins(seg_name_list)
 
             # if there is room
             if len(rand_seg_name_list) != 0:
@@ -347,6 +352,32 @@ def random_ins(seg_name_list):
 
     return seg_list
 
+def decay_ins(dir, room_list_input, current_epoch, max_epoch = 100):
+
+    def linear_decay(total_room_num, current_epoch):
+        decay_total_room_num = int(-(total_room_num/max_epoch)*current_epoch + total_room_num)
+        return decay_total_room_num
+    
+    total_room_num = 0
+    room_num_dict = {}
+    decay_room_num_dict = {}
+    for room, _ in room_list_input.items():
+        room_dir = join(dir, room)
+        seg_name_list = listdir(room_dir)
+        total_room_num += len(seg_name_list)
+        room_num_dict[room] = len(seg_name_list)
+
+        decay_room_num_dict[room] = 0
+
+    decay_total_room_num = linear_decay(total_room_num, current_epoch)
+    for i in range(decay_total_room_num):
+        room_key = random.sample(list(decay_room_num_dict), 1)[0]
+        while room_num_dict[room_key] == decay_room_num_dict[room_key]:
+            room_key = random.sample(list(decay_room_num_dict), 1)[0]
+        decay_room_num_dict[room_key] += 1
+    
+    return decay_room_num_dict
+    
 def unify_ins(seg_name_list, room_dir):
     empty_np = np.zeros((600, 600))
     for seg_name in seg_name_list:
@@ -358,7 +389,6 @@ def unify_ins(seg_name_list, room_dir):
             continue
         empty_np += seg_np
     return empty_np
-
 
 from torchvision.transforms.functional import rotate
 from torchvision.transforms.functional import hflip, vflip
