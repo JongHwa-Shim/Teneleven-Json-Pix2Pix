@@ -85,7 +85,7 @@ def test(epoch):
 
 if __name__ == '__main__':
     start = 1
-    end = 2
+    end = 3
     step = 1
     for i in range(start, end, step):
         test(i)
