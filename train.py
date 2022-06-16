@@ -32,7 +32,7 @@ parser.add_argument('--cuda', action='store_true', help='use cuda?')
 parser.add_argument('--threads', type=int, default=0, help='number of threads for data loader to use')
 parser.add_argument('--seed', type=int, default=123, help='random seed to use. Default=123')
 parser.add_argument('--lamb', type=int, default=100, help='weight on L1 term in objective')
-opt = parser.parse_args("--dataset json --batch_size 2 --cuda --test_batch_size 1 --input_nc 12 --output_nc 13".split())
+opt = parser.parse_args("--dataset json --batch_size 4 --cuda --test_batch_size 1 --input_nc 12 --output_nc 13".split())
 #opt = parser.parse_args()
 print(opt)
 
@@ -52,7 +52,7 @@ test_set = get_test_set(os.path.join(root_path, opt.dataset))
 training_data_loader = DataLoader(dataset=train_set, num_workers=opt.threads, batch_size=opt.batch_size, shuffle=True)
 testing_data_loader = DataLoader(dataset=test_set, num_workers=opt.threads, batch_size=opt.test_batch_size, shuffle=False)
 
-device = torch.device("cuda:0" if opt.cuda else "cpu")
+device = torch.device("cuda:1" if opt.cuda else "cpu")
 
 print('===> Building models')
 net_g = define_G(opt.input_nc, opt.output_nc, opt.ngf, 'batch', False, 'normal', 0.02, gpu_id=device)
@@ -110,8 +110,16 @@ for epoch in range(opt.epoch_count, opt.niter + opt.niter_decay + 1):
         loss_g_gan = criterionGAN(pred_fake, True)
 
         # Second, G(A) = B
-        loss_g_l1 = criterionL1(fake_b, real_b) * opt.lamb
-        
+        # loss_g_l1 = criterionL1(fake_b, real_b) * opt.lamb
+        fake_b_wall = fake_b[:, 10:11]
+        real_b_wall = real_b[:, 10:11]
+        loss_g_l1_wall = criterionL1(fake_b_wall, real_b_wall) * 1000
+
+        fake_b_other = torch.cat([fake_b[:, 0:10], fake_b[:, 11:]], dim=1)
+        real_b_other = torch.cat([real_b[:, 0:10], real_b[:, 11:]], dim=1)
+        loss_g_l1_other = criterionL1(fake_b_other, real_b_other) * opt.lamb
+        loss_g_l1 = loss_g_l1_wall + loss_g_l1_other
+
         loss_g = loss_g_gan + loss_g_l1
         
         loss_g.backward()
