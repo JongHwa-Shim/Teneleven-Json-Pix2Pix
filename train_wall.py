@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 import torch.backends.cudnn as cudnn
 
 from networks import define_G, define_D, GANLoss, get_scheduler, update_learning_rate
-from data import get_training_set, get_test_set
+from data_wall import get_training_set, get_test_set
 
 # Training settings
 parser = argparse.ArgumentParser(description='pix2pix-pytorch-implementation')
@@ -32,7 +32,7 @@ parser.add_argument('--cuda', action='store_true', help='use cuda?')
 parser.add_argument('--threads', type=int, default=0, help='number of threads for data loader to use')
 parser.add_argument('--seed', type=int, default=123, help='random seed to use. Default=123')
 parser.add_argument('--lamb', type=int, default=100, help='weight on L1 term in objective')
-opt = parser.parse_args("--dataset json --batch_size 2 --cuda --test_batch_size 1 --input_nc 12 --output_nc 13".split())
+opt = parser.parse_args("--dataset json --batch_size 2 --cuda --test_batch_size 1 --input_nc 12 --output_nc 1".split())
 #opt = parser.parse_args()
 print(opt)
 
@@ -75,7 +75,7 @@ for epoch in range(opt.epoch_count, opt.niter + opt.niter_decay + 1):
         real_a, real_b = batch[0].to(device), batch[1].to(device)
         fake_b = net_g(real_a)
 
-        ######################
+        ######################7
         # (1) Update D network
         ######################
 

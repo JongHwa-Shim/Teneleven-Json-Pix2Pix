@@ -218,11 +218,17 @@ class JsonDatasetTrain(data.Dataset):
     def __getitem__(self, index):
         # make empty data
         data_a = np.zeros((len(room_list_input)+1, 600, 600)) # +1 is silhouette
-        data_b = np.zeros((len(room_list_target)+1, 600, 600)) # +1 is background
+        # data_b = np.zeros((len(room_list_target)+1, 600, 600)) # +1 is background
 
         dir = join(self.data_root, self.dir_list[index])
 
-        from train import epoch
+        # make wall image
+        wall_dir = join(dir, 'wall')
+        wall_name_list = listdir(wall_dir)
+        wall_seg_np = np.expand_dims(unify_ins(wall_name_list, wall_dir), axis=0)
+        data_wall = torch.tensor(wall_seg_np, dtype=torch.float32)
+
+        from train_wall import epoch
         decay_room_num_dict = decay_ins(dir, room_list_input, current_epoch=epoch)
 
         for room, value in room_list_input.items():
@@ -241,25 +247,25 @@ class JsonDatasetTrain(data.Dataset):
         sil_np = np.array(Image.open(sil_path))/255
         data_a[0] = sil_np
         
-        for room, value in room_list_target.items():
-            room_dir = join(dir, room)
-            seg_name_list = listdir(room_dir)
+        # for room, value in room_list_target.items():
+        #     room_dir = join(dir, room)
+        #     seg_name_list = listdir(room_dir)
 
-            # if there is room
-            if len(seg_name_list) != 0:
-                seg_np = unify_ins(seg_name_list, room_dir)
-                data_b[value] = seg_np
+        #     # if there is room
+        #     if len(seg_name_list) != 0:
+        #         seg_np = unify_ins(seg_name_list, room_dir)
+        #         data_b[value] = seg_np
 
-        # add background to data_b[0]
-        bgr_np = sil_np.copy()
-        bgr_np = np.where(bgr_np == 0, 1, 0)
-        data_b[0] = bgr_np
+        # # add background to data_b[0]
+        # bgr_np = sil_np.copy()
+        # bgr_np = np.where(bgr_np == 0, 1, 0)
+        # data_b[0] = bgr_np
             
         data_a = torch.tensor(data_a, dtype=torch.float32)
-        data_b = torch.tensor(data_b, dtype=torch.float32)
-        data_a, data_b = self.transform(data_a, data_b)
+        # data_b = torch.tensor(data_b, dtype=torch.float32)
+        data_a, data_wall = self.transform(data_a, data_wall)
 
-        return data_a, data_b
+        return data_a, data_wall
 
     def __len__(self):
         return len(self.dir_list)
@@ -274,9 +280,15 @@ class JsonDatasetTest(data.Dataset):
     def __getitem__(self, index):
         # make empty data
         data_a = np.zeros((len(room_list_input)+1, 600, 600)) # silhouette
-        data_b = np.zeros((len(room_list_target)+1, 600, 600)) # background
+        # data_b = np.zeros((len(room_list_target)+1, 600, 600)) # background
 
         dir = join(self.data_root, self.dir_list[index])
+
+        # make wall image
+        wall_dir = join(dir, 'wall')
+        wall_name_list = listdir(wall_dir)
+        wall_seg_np = np.expand_dims(unify_ins(wall_name_list, wall_dir), axis=0)
+        data_wall = torch.tensor(wall_seg_np, dtype=torch.float32)
 
         # for room, value in room_list_input.items():
         #     room_dir = join(dir, room)
@@ -317,24 +329,24 @@ class JsonDatasetTest(data.Dataset):
         enter_np = unify_ins(enter_name_list, enter_dir)
         data_a[9] = enter_np
         
-        for room, value in room_list_target.items():
-            room_dir = join(dir, room)
-            seg_name_list = listdir(room_dir)
+        # for room, value in room_list_target.items():
+        #     room_dir = join(dir, room)
+        #     seg_name_list = listdir(room_dir)
 
-            # if there is room
-            if len(seg_name_list) != 0:
-                seg_np = unify_ins(seg_name_list, room_dir)
-                data_b[value] = seg_np
+        #     # if there is room
+        #     if len(seg_name_list) != 0:
+        #         seg_np = unify_ins(seg_name_list, room_dir)
+        #         data_b[value] = seg_np
 
-        # add background to data_b[0]
-        bgr_np = sil_np.copy()
-        bgr_np = np.where(bgr_np == 0, 1, 0)
-        data_b[0] = bgr_np
+        # # add background to data_b[0]
+        # bgr_np = sil_np.copy()
+        # bgr_np = np.where(bgr_np == 0, 1, 0)
+        # data_b[0] = bgr_np
             
         data_a = torch.tensor(data_a, dtype=torch.float32)
-        data_b = torch.tensor(data_b, dtype=torch.float32)
+        # data_b = torch.tensor(data_b, dtype=torch.float32)
 
-        return data_a, data_b, self.dir_list[index]
+        return data_a, data_wall, self.dir_list[index]
 
     def __len__(self):
         return len(self.dir_list)
